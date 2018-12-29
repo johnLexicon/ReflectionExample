@@ -18,14 +18,14 @@ namespace ReflectionExample
             List<Vehicle> vehiclesWhichContainProps = new List<Vehicle>();
             foreach (var vehicle in vehicles)
             {
-                string[] propertiesInVehicle = vehicle.GetType().GetProperties().Select(pi => pi.Name).ToArray();
-                bool allIncluded = propValuePairs.Select(pvp => pvp.Item1).All(propertiesInVehicle.Contains);
+                string[] propertiesInVehicle = vehicle.GetType().GetProperties().Select(pi => pi.Name.ToLower()).ToArray();
+                bool allIncluded = propValuePairs.Select(pvp => pvp.Item1.ToLower()).All(propertiesInVehicle.Contains);
                 if (allIncluded)
                 {
                     bool sameValues = propValuePairs.All((pvp) =>
                     {
                         var value = vehicle.GetType().GetProperty(pvp.Item1).GetValue(vehicle);
-                        return value.ToString().Equals(pvp.Item2);
+                        return value.ToString().ToLower().Equals(pvp.Item2.ToLower());
                     });
                     if (sameValues)
                     {
@@ -46,7 +46,7 @@ namespace ReflectionExample
                 new Tuple<string, string>("NrOfWheels", "4"),
                 new Tuple<string, string>("Color", "Red"),
                 //new Tuple<string, string>("Length", "150,25")
-                new Tuple<string, string>("FuelType", "Diesel")
+                //new Tuple<string, string>("FuelType", "Diesel")
             };
 
             Vehicle[] vehicles =
